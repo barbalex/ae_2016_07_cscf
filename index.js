@@ -20,7 +20,6 @@ const removeObsoleteObjects = require('./src/removeObsoleteObjects.js')
 
 let objects = null
 const cscf = cscfRows.rows
-console.log('cscf[0]:', cscf[0])
 
 db.viewAsync('artendb/fauna', { include_docs: true })
   .then((result) => {

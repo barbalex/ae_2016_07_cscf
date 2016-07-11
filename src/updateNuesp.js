@@ -30,5 +30,5 @@ module.exports = (db, objects) => {
     }
   })
 
-  return Promise.map(promises, { concurrency: 1 })
+  return Promise.all(promises, { concurrency: 1 })
 }
