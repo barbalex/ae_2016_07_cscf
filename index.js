@@ -3,8 +3,9 @@
 'use strict'
 
 const _ = require('lodash')
+const Promise = require('bluebird')
 const couchPass = require('./couchPass.json')
-const cradle = require('cradle')
+const cradle = Promise.promisifyAll(require('cradle'))
 const connection = new (cradle.Connection)('127.0.0.1', 5984, {
   auth: {
     username: couchPass.user,
@@ -12,20 +13,20 @@ const connection = new (cradle.Connection)('127.0.0.1', 5984, {
   }
 })
 const db = connection.database('artendb')
-const getFaunaObjects = require('./src/getFaunaObjects.js')
+const updateNuesp = require('./src/updateNuesp.js')
 // const rebuildObjects = require('./src/rebuildObjects.js')
 
 let objects = null
 
-getFaunaObjects(db)
+db.viewAsync('artendb/fauna', { include_docs: true })
   .then((result) => {
-    objects = result
-    console.log('objects', objects.slice(0, 2))
-    console.log('objects.length with Aves', objects.length)
+    objects = result.map((doc) => doc)
     // filter out Aves
     objects = objects.filter((o) => _.get(o, 'Taxonomie.Eigenschaften.Klasse') !== 'Aves')
-    console.log('objects.length without Aves', objects.length)
-
+    return updateNuesp(db, objects)
+  })
+  .then(() => {
+    console.log('done')
   })
   // .then(() => rebuildObjects(db, lrTaxonomies))
   .catch((error) => console.log(error))
