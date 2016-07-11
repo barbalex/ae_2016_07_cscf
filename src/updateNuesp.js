@@ -21,7 +21,7 @@ module.exports = (db, objects) => {
             console.log(`The Taxonomy ID of object ${object._id} was updated`)
             resolve2(true)
           })
-          .catch((error) => console.log(`error saving object ${object}`))
+          .catch(() => console.log(`error saving object ${object}`))
         } else {
           console.log(`object ${object} did not have object.Taxonomie.Eigenschaften['Taxonomie ID']`)
           resolve2(true)
@@ -34,5 +34,4 @@ module.exports = (db, objects) => {
   )
 
   return Promise.map(promises, { concurrency: 1 })
-  .then(() => resolve(true))
 }
