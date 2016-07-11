@@ -3,23 +3,24 @@
 'use strict'
 
 const Promise = require('bluebird')
-const taxIdsNew = require('./taxIdNew.js')
+const taxIdsToUpdate = require('./taxIdsToUpdate.js')
 
 module.exports = (db, objects) => {
   const promises = []
-  taxIdsNew.forEach((tax) => {
+  taxIdsToUpdate.forEach((tax) => {
     // find object
     const object = objects.find((o) => o._id === tax.GUID)
     if (object) {
-      if (object.Taxonomie && object.Taxonomie.Eigenschaften && object.Taxonomie.Eigenschaften['Taxonomie ID']) {
+      if (
+        object.Taxonomie &&
+        object.Taxonomie.Eigenschaften &&
+        object.Taxonomie.Eigenschaften['Taxonomie ID']
+      ) {
         // update nuesp
         object.Taxonomie.Eigenschaften['Taxonomie ID'] = tax.TaxonomieId
-        // save doc and update rev
+        // save doc
         const promise = db.saveAsync(object)
-          .then((result) => {
-            object._res = result.res
-            console.log(`The Taxonomy ID of object ${object._id} was updated`)
-          })
+          .then(() => console.log(`The Taxonomy ID of object ${object._id} was updated`))
           .catch(() => console.log(`error saving object ${object}`))
         promises.push(promise)
       } else {
@@ -30,5 +31,5 @@ module.exports = (db, objects) => {
     }
   })
 
-  return Promise.all(promises, { concurrency: 1 })
+  return Promise.all(promises)
 }
