@@ -16,14 +16,16 @@ const updateNuesp = require('./src/updateNuesp.js')
 const cscfRows = require('./src/import.json')
 const removeObsoleteObjects = require('./src/removeObsoleteObjects.js')
 const getFauna = require('./src/getFauna.js')
+const createPcSchutz = require('./src/createPcSchutz.js')
 
 const cscf = cscfRows.rows
 
 getFauna(db)
-  .then((objects) => updateNuesp(db, objects))
-  .then(() => getFauna(db))
-  .then((objects) => removeObsoleteObjects(db, objects, cscf))
-  .then(() => getFauna(db))
+  // .then((objects) => updateNuesp(db, objects))
+  // .then(() => getFauna(db))
+  // .then((objects) => removeObsoleteObjects(db, objects, cscf))
+  // .then(() => getFauna(db))
+  .then((objects) => createPcSchutz(db, objects))
   .then(() => {
     console.log('done')
   })
