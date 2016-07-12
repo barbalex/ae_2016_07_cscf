@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.0.0-rc.6",
     "babel-eslint": "6.1.2",
     "bluebird": "^3.4.1",
     "cradle": "0.7.1",
