@@ -23,8 +23,8 @@ const cscf = cscfRows.rows
 getFauna(db)
   .then((objects) => updateNuesp(db, objects))
   .then(() => getFauna(db))
-  // .then((objects) => removeObsoleteObjects(db, objects, cscf))
-  // .then(() => getFauna(db))
+  .then((objects) => removeObsoleteObjects(db, objects, cscf))
+  .then(() => getFauna(db))
   .then((objects) => createPcSchutz(db, objects))
   .then(() => {
     console.log('done')
