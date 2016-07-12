@@ -48,7 +48,11 @@ module.exports = (db, objects, cscf) => {
           {
             Name: 'ZH GIS',
             Beschreibung: 'GIS-Layer und Betrachtungsdistanzen für das Artenlistentool, Artengruppen für EvAB, im Kanton Zürich. Eigenschaften aller Arten',
-            Datenstand: 'dauernd nachgeführt'
+            Datenstand: 'dauernd nachgeführt',
+            Link: 'http://www.naturschutz.zh.ch',
+            Eigenschaften: {
+
+            }
           }
         ],
         Beziehungssammlungen: []
