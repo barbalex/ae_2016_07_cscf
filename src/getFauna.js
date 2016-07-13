@@ -1,5 +1,7 @@
 'use strict'
 
+/* eslint no-console:0 */
+
 const _ = require('lodash')
 
 module.exports = (db) => {
