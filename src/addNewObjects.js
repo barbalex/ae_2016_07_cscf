@@ -3,6 +3,8 @@
 
 const async = require('async')
 const uuid = require('node-uuid')
+const gisLayerForCscf = require('./gisLayerForCscf.js')
+const agIdEvabByGisLayer = require('./agIdEvabByGisLayer.js')
 
 module.exports = (db, objects, cscf) => {
   const callbacks = []
@@ -20,6 +22,7 @@ module.exports = (db, objects, cscf) => {
     })
     if (!object) {
       // TODO: add pc 'ZH GIS'
+      const gisLayer = gisLayerForCscf(cscfO)
       const newObject = {
         Gruppe: 'Fauna',
         Typ: 'Objekt',
@@ -51,7 +54,10 @@ module.exports = (db, objects, cscf) => {
             Datenstand: 'dauernd nachgeführt',
             Link: 'http://www.naturschutz.zh.ch',
             Eigenschaften: {
-
+              'GIS-Layer': gisLayer,
+              'Artengruppen-ID in EvAB': agIdEvabByGisLayer(gisLayer),
+              'Betrachtungsdistanz (m)': 500,
+              'Kriterien für Bestimmung der Betrachtungsdistanz': 'Nachträglich durch FNS bestimmt'
             }
           }
         ],
