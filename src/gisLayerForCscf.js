@@ -28,6 +28,7 @@ module.exports = (cscf) => {
   const getGisLayerByOrdnung = () => {
     const lbO = {
       Coleoptera: getGisLayerByFamilieForColeoptera(),
+      Dermaptera: 'Übrige Insekten',
       Dictyoptera: 'Heuschrecken',
       Diptera: 'Zweifluegler',
       Ephemeroptera: 'Eintagsfliegen',
@@ -49,6 +50,7 @@ module.exports = (cscf) => {
     Arachnida: () => 'Spinnen',
     Aves: () => 'Voegel',
     Bivalvia: () => 'Mollusken',
+    Cephalaspidomorphi: () => 'Fische',
     Cyclostomi: () => 'Fische',
     Diplopoda: () => 'Tausendfüsser',
     Gastropoda: () => 'Mollusken',
