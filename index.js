@@ -19,6 +19,7 @@ const removeObsoleteObjects = require('./src/removeObsoleteObjects.js')
 const getFauna = require('./src/getFauna.js')
 const createPcSchutz = require('./src/createPcSchutz.js')
 const addNewObjects = require('./src/addNewObjects.js')
+const insertNewCscfProperties = require('./src/insertNewCscfProperties.js')
 
 
 getFauna(db)
@@ -30,7 +31,9 @@ getFauna(db)
   .then(() => getFauna(db))
   .then((objects) => addNewObjects(db, objects, cscf))
   .then(() => getFauna(db))
+  .then((objects) => insertNewCscfProperties(db, objects, cscf))
+  .then(() => getFauna(db))
   .then(() => {
     console.log('done')
   })
-  .catch((error) => console.log(error))
+  .catch((error) => console.log('index.js error:', error))

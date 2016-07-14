@@ -4,8 +4,9 @@
 const async = require('async')
 
 module.exports = (db, objects, cscf) => {
+  // console.log('db:', db)
   const callbacks = []
-  cscf.forEach((cscfO) => {
+  cscf.forEach((cscfO, i) => {
     const object = objects.find((o) => {
       if (
         o.Taxonomie &&
@@ -30,27 +31,41 @@ module.exports = (db, objects, cscf) => {
         Familie: cscfO.Familie || '',
         Gattung: cscfO.Gattung || '',
         Art: cscfO.Art || '',
-        Unterart: cscfO.Unterart || '',
-        Autor: cscfO.Autor || '',
         Artname: `${cscfO.Gattung} ${cscfO.Art}${cscfO.Autor ? ` ${cscfO.Autor}` : ''}`,
         'Artname vollständig': `${cscfO.Gattung} ${cscfO.Art}${cscfO.Autor ? ` ${cscfO.Autor}` : ''}${cscfO.NameDeutsch ? ` (${cscfO.NameDeutsch})` : ''}`,
-        'Name Deutsch': cscfO.NameDeutsch || '',
-        'Name Französisch': cscfO.NameFranösisch || '',
-        'Name Italienisch': cscfO.NameItalienisch || '',
       }
-      // this object is obsolete
-      const callback = db.save(object._id, object._rev, object, function () {
-        // seems like async.series needs this callback
-      })
-      callbacks.push(callback)
+      const eig = tax.Eigenschaften
+      if (cscfO.Unterart) eig.Unterart = cscfO.Unterart
+      if (cscfO.Autor) eig.Autor = cscfO.Autor
+      if (cscfO.NameDeutsch) eig['Name Deutsch'] = cscfO.NameDeutsch
+      if (cscfO.NameFranösisch) eig['Name Französisch'] = cscfO.NameFranösisch
+      if (cscfO.NameItalienisch) eig['Name Italienisch'] = cscfO.NameItalienisch
+
+      if (i === 0) {
+        console.log('cscfO:', cscfO)
+        console.log('object:', object)
+        console.log('object._id:', object._id)
+        console.log('object._rev:', object._rev)
+      }
+      callbacks.push(
+        db.save(object._id, object._rev, object, function (error) {
+          // seems like async.series needs this callback
+          if (error) console.error('db.save-callback error:', error)
+        })
+      )
     } else {
-      console.log('no object found for cscf:', cscfO)
+      console.error('no object found for cscf:', cscfO)
     }
   })
 
+  console.log('callbacks-length', callbacks.length)
+  console.log('callbacks[0]', callbacks[0])
+  console.log('callbacks[1]', callbacks[1])
+  console.log('callbacks[callbacks.length - 2]', callbacks[callbacks.length - 2])
+  console.log('callbacks[callbacks.length - 1]', callbacks[callbacks.length - 1])
   if (callbacks.length === 0) return console.log(`taxonomy updated in ${callbacks.length} fauna objects`)
   async.series(callbacks, function (err) {
-    if (err) return console.log('insertNewCscfProperties.js Error:', err)
+    if (err) return console.error('insertNewCscfProperties.js Error:', err)
     return console.log(`taxonomy updated in ${callbacks.length} fauna objects`)
   })
 }
