@@ -34,6 +34,6 @@ getFauna(db)
   .then((objects) => insertNewCscfProperties(db, objects, cscf))
   .then(() => getFauna(db))
   .then(() => {
-    console.log('done')
+    console.log('new CSCF-Taxonomy applied!')
   })
   .catch((error) => console.log('index.js error:', error))
