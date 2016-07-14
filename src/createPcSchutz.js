@@ -1,10 +1,19 @@
-/* eslint no-console:0, func-names:0, max-len:0, prefer-arrow-callback:0 */
+/* eslint no-console:0, func-names:0, max-len:0, prefer-arrow-callback:0, quotes:0 */
 'use strict'
 
 const async = require('async')
 
 module.exports = (db, objects) => {
-  const callbacks = []
+  const q = async.queue(function (o, callback) {
+    db.save(o._id, o._rev, o, function (error) {
+      if (error) console.error('db.save-callback error:', error)
+      callback()
+    })
+  })
+  q.drain = function () {
+    console.log(`property collections 'Schutz CH' added`)
+  }
+
   objects.forEach((o) => {
     if (
       (
@@ -26,17 +35,10 @@ module.exports = (db, objects) => {
       }
       o.Eigenschaftensammlungen.push(pc)
       delete o.Taxonomie.Eigenschaften['Schutz CH']
-      const callback = db.save(o._id, o._rev, o, function () {
-        // do nothing
-        // seems like this callback is needed
-      })
-      callbacks.push(callback)
-    }
-  })
 
-  if (callbacks.length === 0) return console.log(`${callbacks.length} property collections 'Schutz CH' added`)
-  async.series(callbacks, function (err) {
-    if (err) return console.log('createPcSchutz.js Error:', err)
-    return console.log(`${callbacks.length} property collections 'Schutz CH' added`)
+      q.push(o, function () {
+        // do nothing
+      })
+    }
   })
 }
