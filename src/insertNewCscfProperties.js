@@ -11,6 +11,9 @@ module.exports = (db, objects, cscf) => {
       callback()
     })
   })
+  q.drain = function () {
+    console.log('new cscf properties inserted')
+  }
 
   cscf.forEach((cscfO) => {
     const object = objects.find((o) => {

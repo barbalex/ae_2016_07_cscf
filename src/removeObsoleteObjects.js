@@ -1,11 +1,19 @@
-/* eslint no-console:0 */
+/* eslint no-console:0, func-names:0, prefer-arrow-callback:0 */
 'use strict'
 
 const async = require('async')
 const idsToKeep = require('./idsToKeep.js')
 
 module.exports = (db, objects, cscf) => {
-  const callbacks = []
+  const q = async.queue(function (o, callback) {
+    db.remove(o._id, o._rev, function () {
+      // seems that async needs this callback
+      callback()
+    })
+  })
+  q.drain = function () {
+    console.log('obsolete objects removed')
+  }
   const cscfTaxIds = cscf.map((c) => c.TaxonomieId)
   objects.forEach((o) => {
     if (
@@ -19,16 +27,9 @@ module.exports = (db, objects, cscf) => {
       )
     ) {
       // this object is obsolete
-      const callback = db.remove(o._id, o._rev, function () {
-        // seems that async needs this callback
+      q.push(o, function () {
+        // do nothing
       })
-      callbacks.push(callback)
     }
-  })
-
-  if (callbacks.length === 0) return console.log(`${callbacks.length} obsolete objects removed`)
-  async.series(callbacks, function (err) {
-    if (err) return console.log('removeObsoleteObjects.js Error:', err)
-    return console.log(`${callbacks.length} obsolete objects removed`)
   })
 }
