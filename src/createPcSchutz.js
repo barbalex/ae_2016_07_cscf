@@ -26,12 +26,15 @@ module.exports = (db, objects) => {
       }
       o.Eigenschaftensammlungen.push(pc)
       delete o.Taxonomie.Eigenschaften['Schutz CH']
-      const callback = db.save(o._id, o._rev, o)
+      const callback = db.save(o._id, o._rev, o, () => {
+        // do nothing
+        // seems like this callback is needed
+      })
       callbacks.push(callback)
     }
   })
 
-  async.series(callbacks, function(err) {
+  async.series(callbacks, function (err) {
     if (err) return console.log('createPcSchutz.js Error:', err)
     return
   })
