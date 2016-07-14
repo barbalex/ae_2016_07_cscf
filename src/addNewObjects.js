@@ -31,18 +31,6 @@ module.exports = (db, objects, cscf) => {
           Link: 'http://www.cscf.ch',
           Eigenschaften: {
             'Taxonomie ID': cscfO.TaxonomieId,
-            Klasse: cscfO.Klasse || '',
-            Ordnung: cscfO.Ordnung || '',
-            Familie: cscfO.Familie || '',
-            Gattung: cscfO.Gattung || '',
-            Art: cscfO.Art || '',
-            Unterart: cscfO.Unterart || '',
-            Autor: cscfO.Autor || '',
-            Artname: `${cscfO.Gattung} ${cscfO.Art}${cscfO.Autor ? ` ${cscfO.Autor}` : ''}`,
-            'Artname vollständig': `${cscfO.Gattung} ${cscfO.Art}${cscfO.Autor ? ` ${cscfO.Autor}` : ''}${cscfO.NameDeutsch ? ` (${cscfO.NameDeutsch})` : ''}`,
-            'Name Deutsch': cscfO.NameDeutsch || '',
-            'Name Französisch': cscfO.NameFranösisch || '',
-            'Name Italienisch': cscfO.NameItalienisch || '',
           }
         },
         Eigenschaftensammlungen: [
