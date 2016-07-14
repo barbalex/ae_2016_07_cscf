@@ -7,7 +7,17 @@ const gisLayerForCscf = require('./gisLayerForCscf.js')
 const getAgIdEvabByGisLayer = require('./getAgIdEvabByGisLayer.js')
 
 module.exports = (db, objects, cscf) => {
-  const callbacks = []
+  const q = async.queue(function (newObject, callback) {
+    db.save(uuid.v4(), newObject, function (error) {
+      // seems like async.series needs this callback
+      if (error) console.error('db.save-callback error:', error)
+      callback()
+    })
+  })
+  q.drain = function () {
+    console.log('new fauna objects added')
+  }
+
   cscf.forEach((cscfO) => {
     const object = objects.find((o) => {
       if (
@@ -50,16 +60,9 @@ module.exports = (db, objects, cscf) => {
         Beziehungssammlungen: []
       }
       // this object is obsolete
-      const callback = db.save(uuid.v4(), newObject, function () {
-        // seems like async.series needs this callback
+      q.push(newObject, function () {
+        // do nothing
       })
-      callbacks.push(callback)
     }
-  })
-
-  if (callbacks.length === 0) return console.log(`${callbacks.length} new fauna objects added`)
-  async.series(callbacks, function (err) {
-    if (err) return console.log('addNewObjects.js Error:', err)
-    return console.log(`${callbacks.length} new fauna objects added`)
   })
 }
