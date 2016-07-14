@@ -36,6 +36,6 @@ module.exports = (db, objects) => {
 
   async.series(callbacks, function (err) {
     if (err) return console.log('createPcSchutz.js Error:', err)
-    return
+    return console.log(`${callbacks.length} property collections 'Schutz CH' added`)
   })
 }

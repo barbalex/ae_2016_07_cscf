@@ -1,5 +1,7 @@
 'use strict'
 
+/* eslint no-console:0 */
+
 module.exports = (cscf) => {
   // only used for Ordnung Coleoptera
   const getGisLayerByFamilieForColeoptera = () => {
@@ -60,5 +62,7 @@ module.exports = (cscf) => {
     Polychaeta: () => 'Wuermer',
     Reptilia: () => 'Reptilien',
   }
-  return getGisLayerByKlasse[cscf.Klasse]
+  const gisLayer = getGisLayerByKlasse[cscf.Klasse]()
+  if (!gisLayer) console.log('no gisLayer found for cscf:', cscf)
+  return gisLayer
 }

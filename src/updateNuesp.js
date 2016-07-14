@@ -20,7 +20,7 @@ module.exports = (db, objects) => {
         object.Taxonomie.Eigenschaften['Taxonomie ID'] = tax.TaxonomieId
         // save doc
         const promise = db.saveAsync(object)
-          .then(() => console.log(`The Taxonomy ID of object ${object._id} was updated`))
+          // .then(() => console.log(`The Taxonomy ID of object ${object._id} was updated`))
           .catch(() => console.log(`error saving object ${object}`))
         promises.push(promise)
       } else {
@@ -32,4 +32,5 @@ module.exports = (db, objects) => {
   })
 
   return Promise.all(promises)
+    .then(() => console.log(`${promises.length} Taxonomy ID's updated`))
 }

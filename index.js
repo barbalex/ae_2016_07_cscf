@@ -29,6 +29,7 @@ getFauna(db)
   .then((objects) => createPcSchutz(db, objects))
   .then(() => getFauna(db))
   .then((objects) => addNewObjects(db, objects, cscf))
+  .then(() => getFauna(db))
   .then(() => {
     console.log('done')
   })

@@ -4,11 +4,10 @@
 const async = require('async')
 const uuid = require('node-uuid')
 const gisLayerForCscf = require('./gisLayerForCscf.js')
-const agIdEvabByGisLayer = require('./agIdEvabByGisLayer.js')
+const getAgIdEvabByGisLayer = require('./getAgIdEvabByGisLayer.js')
 
 module.exports = (db, objects, cscf) => {
   const callbacks = []
-  const cscfTaxIds = cscf.map((c) => c.TaxonomieId)
   cscf.forEach((cscfO) => {
     const object = objects.find((o) => {
       if (
@@ -21,7 +20,6 @@ module.exports = (db, objects, cscf) => {
       return false
     })
     if (!object) {
-      // TODO: add pc 'ZH GIS'
       const gisLayer = gisLayerForCscf(cscfO)
       const newObject = {
         Gruppe: 'Fauna',
@@ -55,7 +53,7 @@ module.exports = (db, objects, cscf) => {
             Link: 'http://www.naturschutz.zh.ch',
             Eigenschaften: {
               'GIS-Layer': gisLayer,
-              'Artengruppen-ID in EvAB': agIdEvabByGisLayer(gisLayer),
+              'Artengruppen-ID in EvAB': getAgIdEvabByGisLayer(gisLayer),
               'Betrachtungsdistanz (m)': 500,
               'Kriterien für Bestimmung der Betrachtungsdistanz': 'Nachträglich durch FNS bestimmt'
             }
@@ -63,14 +61,16 @@ module.exports = (db, objects, cscf) => {
         ],
         Beziehungssammlungen: []
       }
+      // this object is obsolete
+      const callback = db.save(uuid.v4(), newObject, () => {
+        // seems like async.series needs this callback
+      })
+      callbacks.push(callback)
     }
-    // this object is obsolete
-    const callback = db.save(uuid.v4(), newObject)
-    callbacks.push(callback)
   })
 
   async.series(callbacks, function(err) {
     if (err) return console.log('addNewObjects.js Error:', err)
-    return
+    return console.log(`${callbacks.length} new fauna objects added`)
   })
 }
