@@ -16,13 +16,15 @@ module.exports = (db, objects) => {
         object.Taxonomie.Eigenschaften &&
         object.Taxonomie.Eigenschaften['Taxonomie ID']
       ) {
-        // update nuesp
-        object.Taxonomie.Eigenschaften['Taxonomie ID'] = tax.TaxonomieId
-        // save doc
-        const promise = db.saveAsync(object)
-          // .then(() => console.log(`The Taxonomy ID of object ${object._id} was updated`))
-          .catch(() => console.log(`error saving object ${object}`))
-        promises.push(promise)
+        // only update if necessary
+        if (object.Taxonomie.Eigenschaften['Taxonomie ID'] !== tax.TaxonomieId) {
+          // update nuesp
+          object.Taxonomie.Eigenschaften['Taxonomie ID'] = tax.TaxonomieId
+          // save doc
+          const promise = db.saveAsync(object)
+            .catch(() => console.log(`error saving object ${object}`))
+          promises.push(promise)
+        }
       } else {
         console.log(`object ${object} did not have object.Taxonomie.Eigenschaften['Taxonomie ID']`)
       }

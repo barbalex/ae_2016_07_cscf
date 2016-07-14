@@ -19,13 +19,15 @@ module.exports = (db, objects, cscf) => {
       )
     ) {
       // this object is obsolete
-      const callback = db.remove(o._id, o._rev)
+      const callback = db.remove(o._id, o._rev, function () {
+        // seems that async needs this callback
+      })
       callbacks.push(callback)
     }
   })
 
   async.series(callbacks, function (err) {
     if (err) return console.log('removeObsoleteObjects.js Error:', err)
-    return console.log(`${callbacks.length} obsolete objects removed`)
+    console.log(`${callbacks.length} obsolete objects removed`)
   })
 }

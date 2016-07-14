@@ -14,12 +14,12 @@ const connection = new (cradle.Connection)('127.0.0.1', 5984, {
 const db = connection.database('artendb')
 const updateNuesp = require('./src/updateNuesp.js')
 const cscfRows = require('./src/import.json')
+const cscf = cscfRows.rows
 const removeObsoleteObjects = require('./src/removeObsoleteObjects.js')
 const getFauna = require('./src/getFauna.js')
 const createPcSchutz = require('./src/createPcSchutz.js')
 const addNewObjects = require('./src/addNewObjects.js')
 
-const cscf = cscfRows.rows
 
 getFauna(db)
   .then((objects) => updateNuesp(db, objects))

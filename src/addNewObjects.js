@@ -1,4 +1,4 @@
-/* eslint no-console:0 */
+/* eslint no-console:0, max-len:0, prefer-arrow-callback:0, func-names:0 */
 'use strict'
 
 const async = require('async')
@@ -26,7 +26,7 @@ module.exports = (db, objects, cscf) => {
         Typ: 'Objekt',
         Taxonomie: {
           Name: 'CSCF (2016)',
-          Beschreibung: "Index des CSCF. Eigenschaften von 22'068 Arten",
+          Beschreibung: "Index des CSCF. Eigenschaften von 22'068 Arten",  // eslint-disable-line quotes
           Datenstand: 2016,
           Link: 'http://www.cscf.ch',
           Eigenschaften: {
@@ -62,15 +62,16 @@ module.exports = (db, objects, cscf) => {
         Beziehungssammlungen: []
       }
       // this object is obsolete
-      const callback = db.save(uuid.v4(), newObject, () => {
+      const callback = db.save(uuid.v4(), newObject, function () {
         // seems like async.series needs this callback
       })
       callbacks.push(callback)
     }
   })
 
-  async.series(callbacks, function(err) {
+  if (callbacks.length === 0) return console.log(`${callbacks.length} new fauna objects added`)
+  async.series(callbacks, function (err) {
     if (err) return console.log('addNewObjects.js Error:', err)
-    return console.log(`${callbacks.length} new fauna objects added`)
+    console.log(`${callbacks.length} new fauna objects added`)
   })
 }

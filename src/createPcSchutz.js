@@ -1,4 +1,4 @@
-/* eslint no-console:0 */
+/* eslint no-console:0, func-names:0, max-len:0 */
 'use strict'
 
 const async = require('async')
@@ -26,7 +26,7 @@ module.exports = (db, objects) => {
       }
       o.Eigenschaftensammlungen.push(pc)
       delete o.Taxonomie.Eigenschaften['Schutz CH']
-      const callback = db.save(o._id, o._rev, o, () => {
+      const callback = db.save(o._id, o._rev, o, function () {
         // do nothing
         // seems like this callback is needed
       })
@@ -36,6 +36,6 @@ module.exports = (db, objects) => {
 
   async.series(callbacks, function (err) {
     if (err) return console.log('createPcSchutz.js Error:', err)
-    return console.log(`${callbacks.length} property collections 'Schutz CH' added`)
+    console.log(`${callbacks.length} property collections 'Schutz CH' added`)
   })
 }
