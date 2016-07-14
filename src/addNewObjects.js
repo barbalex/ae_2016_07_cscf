@@ -72,6 +72,6 @@ module.exports = (db, objects, cscf) => {
   if (callbacks.length === 0) return console.log(`${callbacks.length} new fauna objects added`)
   async.series(callbacks, function (err) {
     if (err) return console.log('addNewObjects.js Error:', err)
-    console.log(`${callbacks.length} new fauna objects added`)
+    return console.log(`${callbacks.length} new fauna objects added`)
   })
 }

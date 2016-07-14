@@ -26,8 +26,9 @@ module.exports = (db, objects, cscf) => {
     }
   })
 
+  if (callbacks.length === 0) return console.log(`${callbacks.length} obsolete objects removed`)
   async.series(callbacks, function (err) {
     if (err) return console.log('removeObsoleteObjects.js Error:', err)
-    console.log(`${callbacks.length} obsolete objects removed`)
+    return console.log(`${callbacks.length} obsolete objects removed`)
   })
 }

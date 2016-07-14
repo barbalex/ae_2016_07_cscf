@@ -1,4 +1,4 @@
-/* eslint no-console:0, func-names:0, max-len:0 */
+/* eslint no-console:0, func-names:0, max-len:0, prefer-arrow-callback:0 */
 'use strict'
 
 const async = require('async')
@@ -34,8 +34,9 @@ module.exports = (db, objects) => {
     }
   })
 
+  if (callbacks.length === 0) return console.log(`${callbacks.length} property collections 'Schutz CH' added`)
   async.series(callbacks, function (err) {
     if (err) return console.log('createPcSchutz.js Error:', err)
-    console.log(`${callbacks.length} property collections 'Schutz CH' added`)
+    return console.log(`${callbacks.length} property collections 'Schutz CH' added`)
   })
 }
