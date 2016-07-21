@@ -9,22 +9,29 @@ module.exports = (db, objects) =>
 
     objects.forEach((o) => {
       if (_.get(o, 'Taxonomie.Name') === 'CSCF (2009)') {
-        o.Name = 'CSCF (2016)'
         if (
           o.Taxonomie.Eigenschaften &&
           o.Taxonomie.Eigenschaften['Taxonomie ID'] &&
           o.Taxonomie.Eigenschaften['Taxonomie ID'] > 1000000
         ) {
-          o.Beschreibung = `Diese Art (und alle mit einer Taxonomie ID > 1'000'000) wurde von der Fachstelle Naturschutz des Kantons Zürich ergänzt`
-          o.Datenstand = 2016
-          o.Link = 'http://naturschutz.zh.ch'
+          o.Taxonomie.Name = 'CSCF (2016)'
+          o.Taxonomie.Beschreibung = `Diese Art (und alle mit einer Taxonomie ID > 1'000'000) wurde von der Fachstelle Naturschutz des Kantons Zürich ergänzt`
+          o.Taxonomie.Datenstand = 2016
+          o.Taxonomie.Link = 'http://naturschutz.zh.ch'
+          objectsToSave.push(o)
+        } else if (_.get(o, 'Taxonomie.Eigenschaften.Klasse') === 'Aves') {
+          o.Taxonomie.Name = 'CSCF (2016)'
+          o.Taxonomie.Beschreibung = 'Die taxonomischen Daten der Vögel stammen noch aus dem Jahr 2009'
+          o.Taxonomie.Datenstand = 2009
+          o.Taxonomie.Link = 'http://www.cscf.ch'
+          objectsToSave.push(o)
+        } else {
+          o.Taxonomie.Name = 'CSCF (2016)'
+          o.Taxonomie.Beschreibung = 'Die Taxonomie dieser Art stammt noch aus dem Jahr 2009'
+          o.Taxonomie.Datenstand = 2009
+          o.Taxonomie.Link = 'http://www.cscf.ch'
+          objectsToSave.push(o)
         }
-        if (_.get(o, 'Taxonomie.Eigenschaften.Klasse') === 'Aves') {
-          o.Beschreibung = 'Die taxonomischen Daten der Vögel stammen noch aus dem Jahr 2009'
-          o.Datenstand = 2009
-          o.Link = 'http://www.cscf.ch'
-        }
-        objectsToSave.push(o)
       }
     })
 
@@ -33,8 +40,9 @@ module.exports = (db, objects) =>
       return resolve()
     }
     db.saveAsync(objectsToSave)
-      .then(() => {
-        console.log(`${objectsToSave.length} objects updated`)
+      .then((result) => {
+        console.log(`${objectsToSave.length} objects updated, result:`, result)
+        console.log(`objectsToSave[0]:`, objectsToSave[0])
         resolve()
       })
       .catch((error) => {

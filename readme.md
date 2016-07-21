@@ -19,12 +19,12 @@ Dabei verschwinden folgende Felder: Name Romanisch, Name Englisch.
   - Datenstand: 2016
   - Link: 'http://www.cscf.ch'<br/><br/>
 
-  Mit folgenden Unterschieden:
+  Mit folgenden Ausnahmen:
 
   FNS-Arten:
     - Beschreibung: "Diese Art (und alle mit einer Taxonomie ID > 1'000'000) wurde von der Fachstelle Naturschutz des Kantons Zürich ergänzt"
     - Link: 'http://naturschutz.zh.ch'
-    
+
   Vögel:
     - Beschreibung: "Die taxonomischen Daten der Vögel stammen noch aus dem Jahr 2009"
     - Datenstand: 2009<br/><br/>
