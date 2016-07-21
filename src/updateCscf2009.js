@@ -1,7 +1,7 @@
 /* eslint no-console:0, max-len:0, prefer-arrow-callback:0, func-names:0 */
 'use strict'
 
-import _ from 'lodash'
+const _ = require('lodash')
 
 module.exports = (db, objects) =>
   new Promise((resolve, reject) => {
@@ -19,11 +19,7 @@ module.exports = (db, objects) =>
           o.Datenstand = 2016
           o.Link = 'http://naturschutz.zh.ch'
         }
-        if (
-          o.Taxonomie.Eigenschaften &&
-          o.Taxonomie.Eigenschaften.Klasse &&
-          o.Taxonomie.Eigenschaften.Klasse === 'Aves'
-        ) {
+        if (_.get(o, 'Taxonomie.Eigenschaften.Klasse') === 'Aves') {
           o.Beschreibung = 'Die taxonomischen Daten der Vögel stammen noch aus dem Jahr 2009'
           o.Datenstand = 2009
           o.Link = 'http://www.cscf.ch'
