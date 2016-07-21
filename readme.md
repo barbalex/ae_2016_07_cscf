@@ -13,4 +13,19 @@ Ausnahme: die drei grün markierten Arten aus Andreas Müllers Liste "Liste1Arte
 8.	Bei den verbleibenden Nicht-FNS-Arten werden die bisherigen Attribute des CSCF entfernt und mit den neuen ersetzt.
 Dabei verschwinden folgende Felder: Name Romanisch, Name Englisch.
 9.	Die Felder "Artname", "Artname vollständig" und "TaxonID" werden aus den übrigen Daten generiert
+10. Die verbleibenden 459 Arten mit Taxonomie "CSCF (2009)" erhalten diese Taxonomie:
+  - Name: 'CSCF (2016)'
+  - Beschreibung: "Index des CSCF. Eigenschaften von 22'068 Arten"
+  - Datenstand: 2016
+  - Link: 'http://www.cscf.ch'<br/><br/>
+
+  Mit folgenden Unterschieden:
+
+  FNS-Arten:
+    - Beschreibung: "Diese Art (und alle mit einer Taxonomie ID > 1'000'000) wurde von der Fachstelle Naturschutz des Kantons Zürich ergänzt"
+    - Link: 'http://naturschutz.zh.ch'
+    
+  Vögel:
+    - Beschreibung: "Die taxonomischen Daten der Vögel stammen noch aus dem Jahr 2009"
+    - Datenstand: 2009<br/><br/>
 10.	Kontrollieren

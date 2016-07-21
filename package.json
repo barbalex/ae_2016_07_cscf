@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "startCscf2009": "node indexCscf2009.js",
     "removeTax": "node removeTaxonomies.js"
   },
   "author": "",

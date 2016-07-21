@@ -20,6 +20,7 @@ const getFauna = require('./src/getFauna.js')
 const createPcSchutz = require('./src/createPcSchutz.js')
 const addNewObjects = require('./src/addNewObjects.js')
 const insertNewCscfProperties = require('./src/insertNewCscfProperties.js')
+const updateCscf2009 = require('./src/updateCscf2009.js')
 
 
 getFauna(db)
@@ -32,6 +33,8 @@ getFauna(db)
   .then((objects) => addNewObjects(db, objects, cscf))
   .then(() => getFauna(db))
   .then((objects) => insertNewCscfProperties(db, objects, cscf))
+  .then(() => getFauna(db))
+  .then((objects) => updateCscf2009(db, objects))
   .then(() => getFauna(db))
   .then(() => {
     console.log('new CSCF-Taxonomy applied!')
