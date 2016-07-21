@@ -40,9 +40,8 @@ module.exports = (db, objects) =>
       return resolve()
     }
     db.saveAsync(objectsToSave)
-      .then((result) => {
-        console.log(`${objectsToSave.length} objects updated, result:`, result)
-        console.log(`objectsToSave[0]:`, objectsToSave[0])
+      .then(() => {
+        console.log(`${objectsToSave.length} objects updated`)
         resolve()
       })
       .catch((error) => {

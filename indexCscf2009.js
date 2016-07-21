@@ -12,13 +12,13 @@ const connection = new (cradle.Connection)('127.0.0.1', 5984, {
   }
 })
 const db = connection.database('artendb')
-const getFauna = require('./src/getFauna.js')
+const getAllFauna = require('./src/getAllFauna.js')
 const updateCscf2009 = require('./src/updateCscf2009.js')
 
-getFauna(db)
+getAllFauna(db)
   .then((objects) => updateCscf2009(db, objects))
-  .then(() => getFauna(db))
+  .then(() => getAllFauna(db))
   .then(() => {
-    console.log('new CSCF-Taxonomy applied!')
+    console.log('done!')
   })
   .catch((error) => console.log('index.js error:', error))
